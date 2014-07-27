@@ -1,0 +1,39 @@
+
+
+<div class="row">
+<div class="col-md-9">
+<h1>
+    {{dishdetail.name}}
+</h1>
+<h4 class="indented">
+    Prepared by: {{dishdetail.servery.fullname}}
+</h4>
+</div>
+
+<div class="col-md-3 vert">
+
+
+<a class="btn btn-default btn-s" ng-class="item.vote_type!='up' ? 'btn-default' : 'btn-success' " ng-click="upvote(item)" >
+<i class="glyphicon glyphicon-chevron-up"></i>
+</a>      
+
+<span class="score">{{dishdetail.score}}</span>
+
+<a class="btn btn-default btn-s" ng-class="item.vote_type!='down' ? 'btn-default' : 'btn-success' " ng-click="downvote(item)" >
+<i class="glyphicon glyphicon-chevron-down"></i>
+</a>  
+
+</div>
+</div>
+
+<h2>
+Reviews:
+</h2>
+
+<ul class="list-group">
+  <li class="list-group-item">Cras justo odio</li>
+  <li class="list-group-item">Dapibus ac facilisis in</li>
+  <li class="list-group-item">Morbi leo risus</li>
+  <li class="list-group-item">Porta ac consectetur ac</li>
+  <li class="list-group-item">Vestibulum at eros</li>
+</ul>

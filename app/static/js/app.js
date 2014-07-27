@@ -8,15 +8,18 @@ angular.module('serveryApp', ['ui.bootstrap', 'serveryApi', 'serveryFilters','us
         templateUrl: 'static/views/main.html',
         controller: 'MainCtrl',
         resolve: {
-          serveries: ['Servery', function(Servery) { 
-            return Servery.all();
+          serveries: ['Servery','$q', function(Servery,$q) { 
+            var defered = $q.defer();
+
+            Servery.all(function(result)
+            {
+              defered.resolve(result.serveries);
+            });
+
+            return defered.promise;
           }]
         }
       })
-      .when('/template', {
-        templateUrl: 'static/views/template.html'
-      })
-
       .when('/userSettings', {
         templateUrl: 'static/views/userSettings.html',
         controller: 'UserSettingsCtrl'
@@ -29,6 +32,22 @@ angular.module('serveryApp', ['ui.bootstrap', 'serveryApi', 'serveryFilters','us
             var defered = $q.defer();
 
             Servery.nextMeals(function(result)
+            {
+              defered.resolve(result);
+            });
+            return defered.promise;
+          }]
+        }
+      })
+
+      .when('/review/:dishdetailsId', {
+        templateUrl: 'static/views/reviewPage.html',
+        controller: 'ReviewCtrl',
+        resolve: {
+          dishdetail: ['DishDetails','$q','$route', function(DishDetails,$q,$route) {
+            var defered = $q.defer();
+
+            DishDetails.query({dishdetailsId:$route.current.params.dishdetailsId},function(result)
             {
               defered.resolve(result);
             });

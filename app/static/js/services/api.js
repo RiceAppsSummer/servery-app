@@ -11,7 +11,7 @@ serveryApi.factory('Servery', ['$resource', function($resource) {
     'api/serveries/:serveryId',
     {},
     {
-      all: {method: 'GET', params: {}, isArray: true},
+      all: {method: 'GET', params: {}},
       query:{method: 'GET', params: {serveryId:'serveryId'}},
       nextMeals:{method: 'GET',params:{}, url: '/api/serveries/next_meals'}
     });
@@ -25,6 +25,16 @@ serveryApi.factory('Menu', ['$resource', function($resource) {
             query: {method: 'GET', params: {serveryId:'serveryId',date:"no date provided"}}
     });
 }]);
+
+serveryApi.factory('DishDetails', ['$resource', function($resource) {
+  return $resource(
+    'api/dishdetails/:dishdetailsId',
+    {},
+    {
+            query: {method: 'GET', params: {}}
+    });
+}]);
+
 
 serveryApi.factory('Vote', ['$resource', function($resource) {
   return $resource(

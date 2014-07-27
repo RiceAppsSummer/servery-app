@@ -1,7 +1,7 @@
-from app import app, db
 from flask import request, jsonify, session
-from models import User
-import json
+
+from . import app, db
+from .models import User
 
 
 

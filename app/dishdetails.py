@@ -1,25 +1,8 @@
-from flask import request, abort
-from app import app,db
-from models import *
-import json
+from flask import request, abort, jsonify
 
-import users
-
-def get_vote_status(dishdetails):
-  vote = db.session.query(DishDetailsAndUserRelationship).filter(DishDetailsAndUserRelationship.dishdetails == dishdetails,DishDetailsAndUserRelationship.user == users.current_user()).scalar()
-
-  if vote is None:
-    return "none"
-  else:
-    return vote.vote_type
-
-def get_dishdetails_data(dishdetails):
-  return {
-    "name":dishdetails.dish_description,
-    "score":dishdetails.score,
-    "id": dishdetails.id,
-    "vote_type" : get_vote_status(dishdetails)
-  }
+from . import app,db
+from .models import *
+from .jsonformatter import get_dishdetails_data, get_servery_data
 
 def create_or_get_relationship(dishdetails,user):
   relationship = db.session.query(DishDetailsAndUserRelationship).filter(
@@ -59,7 +42,7 @@ def vote(dishdetails_id,vote_type):
 
   result = {"new_score": relationship.dishdetails.score}
 
-  return json.dumps(result),200,{"content-type" : "application/json"}
+  return jsonify(result)
 
 def update_score_on_vote_removal(old_vote):
   dishdetails = old_vote.dishdetails
@@ -74,3 +57,15 @@ def update_score_on_vote_addition(new_vote):
     dishdetails.score += 1
   elif new_vote.vote_type == "down":
     dishdetails.score -= 1  
+
+
+@app.route('/api/dishdetails/<int:dishdetails_id>')
+def get_dishdetails(dishdetails_id):
+  dishdetails = db.session.query(DishDetails).get(dishdetails_id)
+  return jsonify(get_dishdetails_data(dishdetails))
+
+@app.route('/api/dishdetails/<int:dishdetails_id>/reviews')
+def get_dishdetails_reviews(dishdetails_id):
+  dishdetails = db.session.query(DishDetails).get(dishdetails_id)
+  print dishdetails.reviews
+  return jsonify(get_dishdetails_data(dishdetails))

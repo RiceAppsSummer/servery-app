@@ -54,9 +54,18 @@ class Meal(db.Model):
 
 class Review(db.Model):
     __tablename__ = 'review'
+    __table_args__ = (db.UniqueConstraint('user_id','dishdetails_id',name="1DishReviewPerUsers"),)
+
 
     id = db.Column(db.Integer,primary_key=True)
-    review = db.Column(db.String(),nullable=True)
+    review = db.Column(db.String(),nullable=False)
+
+    user_id = db.Column(db.ForeignKey("users.id"),nullable=False)
+    user = db.relationship("User",backref="reviews")
+
+    dishdetails_id = db.Column(db.ForeignKey("dishdetails.id"),nullable=False)
+    dishdetails = db.relationship("DishDetails",backref="reviews")
+
 
 class Dish(db.Model):
     __tablename__ = 'dishes'
@@ -97,4 +106,6 @@ class DishDetailsAndUserRelationship(db.Model):
     vote_type = db.Column(db.Enum('up','down','none',name='vote_type'),nullable=False,default="none")
 
     wants_alert = db.Column(db.Boolean,nullable=False,default=False)
+
+
 

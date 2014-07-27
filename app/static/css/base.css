@@ -2,6 +2,15 @@
   margin-top: 100px;
 }
 
+.indented{
+  margin-top: -10px;
+  margin-left: 50px;
+}
+
+.vert {
+  margin-top: 20px;
+}
+
 .servery-info {
 
 }
@@ -50,6 +59,8 @@
   display: inline-block;
   text-align: right;
   width: 20px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .menuThing {
